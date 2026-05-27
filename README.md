@@ -250,7 +250,7 @@ The 99.8% accuracy on 3-class classification demonstrates that NLP-based cancer 
 ## 📬 Contact
 
 **Dhinakar Yalla** — Data Engineer
-📧 dhinakaryalla07@gmail.com
+📧 yalladhinakar@gmail.com
 🐙 [github.com/dhinakar07](https://github.com/dhinakar07)
 
 ---
