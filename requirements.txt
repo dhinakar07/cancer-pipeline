@@ -1,7 +1,4 @@
 # Streamlit Cloud compatible requirements
-# TensorFlow excluded — not available for Python 3.14 on Streamlit Cloud
-# Live Predict works locally; all other dashboard pages work on cloud
-
 streamlit
 pandas
 plotly
@@ -10,3 +7,4 @@ psycopg2-binary
 nltk
 numpy
 python-dotenv
+loguru
