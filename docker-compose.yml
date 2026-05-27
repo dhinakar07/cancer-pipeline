@@ -1,0 +1,53 @@
+# ============================================================
+# cancer-pipeline — Docker Compose
+# Spins up PostgreSQL for local development.
+# Usage: docker-compose up -d
+# ============================================================
+
+version: "3.9"
+
+services:
+
+  # ── PostgreSQL database ──────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: cancer_pipeline_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: cancer_pipeline
+      POSTGRES_USER: cancer_user
+      POSTGRES_PASSWORD: cancer_password   # override via .env in production
+    ports:
+      - "5433:5432"
+    volumes:
+      # Named volume so data persists across container restarts
+      - postgres_data:/var/lib/postgresql/data
+      # Auto-run schema creation on first start
+      - ./src/db/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cancer_user -d cancer_pipeline"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── pgAdmin (optional GUI) ───────────────────────────────
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: cancer_pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@cancer-pipeline.local
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    profiles:
+      # Only start pgAdmin when explicitly requested:
+      # docker-compose --profile gui up -d
+      - gui
+
+volumes:
+  postgres_data:
+    driver: local
