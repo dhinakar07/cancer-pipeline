@@ -346,6 +346,23 @@ elif page == "🧪 Live Predict":
     st.title("🧪 Live Cancer Classification")
     st.caption("Paste any clinical text and the Bi-LSTM model will classify it instantly")
 
+    # Check if TensorFlow is available (not available on Streamlit Cloud with Python 3.14)
+    try:
+        import tensorflow as tf
+        _tensorflow_available = True
+    except ImportError:
+        _tensorflow_available = False
+
+    if not _tensorflow_available:
+        st.warning(
+            "⚠️ **Live Predict is not available in this cloud deployment.**\n\n"
+            "TensorFlow does not yet support Python 3.14 on Streamlit Cloud. "
+            "To use Live Predict, run the dashboard locally:\n\n"
+            "```bash\nstreamlit run dashboard/app.py\n```\n\n"
+            "All other pages (Overview, Predictions, Performance) work fully in the cloud."
+        )
+        st.stop()
+
     st.markdown("---")
 
     # ── Sample texts for quick testing ──────────────────────

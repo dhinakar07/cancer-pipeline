@@ -1,10 +1,12 @@
-# Dashboard dependencies only — Streamlit Cloud compatible
-streamlit==1.35.0
-pandas==2.2.2
-plotly==5.22.0
-sqlalchemy==2.0.30
-psycopg2-binary==2.9.9
-tensorflow-cpu==2.16.1
-nltk==3.8.1
-numpy==1.26.4
-python-dotenv==1.0.1
+# Streamlit Cloud compatible requirements
+# TensorFlow excluded — not available for Python 3.14 on Streamlit Cloud
+# Live Predict works locally; all other dashboard pages work on cloud
+
+streamlit
+pandas
+plotly
+sqlalchemy
+psycopg2-binary
+nltk
+numpy
+python-dotenv
