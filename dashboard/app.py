@@ -12,6 +12,7 @@ Run with:
 The dashboard connects to PostgreSQL using the same config as the pipeline.
 """
 
+import os
 import sys
 from pathlib import Path
 
@@ -21,6 +22,17 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 import streamlit as st
+
+# ── Inject Streamlit Cloud secrets into environment variables ─
+# Streamlit Cloud stores secrets in st.secrets, but src/config.py
+# reads credentials via os.getenv(). This block bridges the two
+# so the dashboard works on both local (.env file) and cloud (st.secrets).
+try:
+    for _key, _val in st.secrets.items():
+        if _key not in os.environ:
+            os.environ[_key] = str(_val)
+except Exception:
+    pass  # No secrets configured — will fall back to .env file
 
 # ── Page configuration (must be the first Streamlit call) ───
 st.set_page_config(
